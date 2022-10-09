@@ -40,6 +40,12 @@ DNS_SETTING=""
 CONFIG_NAME="nextcloud-config"
 NEXTCLOUD_VERSION="23"
 COUNTRY_CODE="US"
+AZURE_TENANT_ID=""
+AZURE_CLIENT_ID=""
+AZURE_CLIENT_SECRET=""
+AZURE_SUBSCRIPTION_ID=""
+AZURE_RESOURCE_GROUP_NAME=""
+
 #RELEASE="12.0-RELEASE"
 
 # Check for nextcloud-config and set configuration
@@ -417,8 +423,17 @@ if [ "${DATABASE}" = "mariadb" ]; then
 fi
 iocage exec "${JAIL_NAME}" sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s/DNS-PLACEHOLDER/${DNS_SETTING}/" /usr/local/www/Caddyfile
+
+if ["${DNS_PLUGIN}" = "cloudflare" ]; then
+  iocage exec "${JAIL_NAME}" sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
+elif ["${DNS_PLUGIN}" = "azure" ]; then
+  iocage exec "${JAIL_NAME}" sed -i '' "s/tenant_id/${AZURE_TENANT_ID}/" /usr/local/www/Caddyfile
+  iocage exec "${JAIL_NAME}" sed -i '' "s/client_id/${AZURE_CLIENT_ID}/" /usr/local/www/Caddyfile
+  iocage exec "${JAIL_NAME}" sed -i '' "s/client_secret/${AZURE_CLIENT_SECRET}/" /usr/local/www/Caddyfile
+  iocage exec "${JAIL_NAME}" sed -i '' "s/subscription_id/${AZURE_SUBSCRIPTION_ID}/" /usr/local/www/Caddyfile
+  iocage exec "${JAIL_NAME}" sed -i '' "s/resource_group_name/${AZURE_RESOURCE_GROUP_NAME}/" /usr/local/www/Caddyfile
+fi
 iocage exec "${JAIL_NAME}" sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
-iocage exec "${JAIL_NAME}" sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
 iocage exec "${JAIL_NAME}" sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
 iocage exec "${JAIL_NAME}" sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
 iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
