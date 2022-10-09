@@ -425,8 +425,10 @@ iocage exec "${JAIL_NAME}" sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/loc
 #iocage exec "${JAIL_NAME}" sed -i '' "s/DNS-PLACEHOLDER/${DNS_SETTING}/" /usr/local/www/Caddyfile
 
 if ["${DNS_PLUGIN}" = "cloudflare" ]; then
+  echo "Setting cloudflare values"
   iocage exec "${JAIL_NAME}" sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
 elif ["${DNS_PLUGIN}" = "azure" ]; then
+  echo "Setting azure values"
   iocage exec "${JAIL_NAME}" sed -i '' "s/tenant_id/${AZURE_TENANT_ID}/" /usr/local/www/Caddyfile
   iocage exec "${JAIL_NAME}" sed -i '' "s/client_id/${AZURE_CLIENT_ID}/" /usr/local/www/Caddyfile
   iocage exec "${JAIL_NAME}" sed -i '' "s/client_secret/${AZURE_CLIENT_SECRET}/" /usr/local/www/Caddyfile
