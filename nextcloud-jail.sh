@@ -178,6 +178,7 @@ then
 fi
 
 # Check for reinstall
+## TO-DO: Impersise, this checks if files exist. .htaccess is caught by this.
 if [ "$(ls -A "${CONFIG_PATH}")" ]; then
 	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
 	if [ "$(ls -A "${DB_PATH}/${DATABASE}")" ]; then
@@ -424,6 +425,7 @@ fi
 iocage exec "${JAIL_NAME}" sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s/DNS-PLACEHOLDER/${DNS_SETTING}/" /usr/local/www/Caddyfile
 
+echo "DNS_Plugin_setting ${DNS_PLUGIN}"
 if ["${DNS_PLUGIN}" = "cloudflare" ]; then
   echo "Setting cloudflare values"
   iocage exec "${JAIL_NAME}" sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
@@ -435,6 +437,7 @@ elif ["${DNS_PLUGIN}" = "azure" ]; then
   iocage exec "${JAIL_NAME}" sed -i '' "s/subscription_id/${AZURE_SUBSCRIPTION_ID}/" /usr/local/www/Caddyfile
   iocage exec "${JAIL_NAME}" sed -i '' "s/resource_group_name/${AZURE_RESOURCE_GROUP_NAME}/" /usr/local/www/Caddyfile
 fi
+echo "Done with DNS sepecific settings"
 iocage exec "${JAIL_NAME}" sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
 iocage exec "${JAIL_NAME}" sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
 iocage exec "${JAIL_NAME}" sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
