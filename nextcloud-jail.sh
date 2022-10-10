@@ -40,6 +40,7 @@ DNS_SETTING=""
 CONFIG_NAME="nextcloud-config"
 NEXTCLOUD_VERSION="23"
 COUNTRY_CODE="US"
+DNS_PLUGIN=""
 AZURE_TENANT_ID=""
 AZURE_CLIENT_ID=""
 AZURE_CLIENT_SECRET=""
@@ -119,6 +120,8 @@ if [ $DNS_CERT -eq 1 ] && [ -z "${DNS_PLUGIN}" ] ; then
   echo "\"github.com/caddy-dns/cloudflare\", enter \"coudflare\"."
   exit 1
 fi
+
+echo "DNS_Plugin_setting ${DNS_PLUGIN}"
 
 if [ $DNS_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
   echo "CERT_EMAIL must be set when using Let's Encrypt certs."
